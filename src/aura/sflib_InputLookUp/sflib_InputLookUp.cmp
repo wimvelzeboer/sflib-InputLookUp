@@ -1,0 +1,79 @@
+<!--
+    This file is part of sflib.
+
+    sflib is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License,
+    or any later version.
+
+    sflib is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with sflib.  If not, see <http://www.gnu.org/licenses/>.
+
+    @author: Enrico Murru (http://enree.co, @enreeco)
+    @updatedby: architect William Velzeboer  wim@velzeboer.nl, January 2018
+    @version: 1.0
+-->
+
+<aura:component description="sflib_InputLookUp" controller="sflib_InputLookUpController">
+    <!---Use Salesforce Lightning Design System CSS From Static resources-->
+    <!--        <ltng:require styles="{!$Resource.SLDS24 + '/assets/styles/salesforce-lightning-design-system.css'}"/>-->
+
+    <!--declare attributes-->
+    <aura:attribute name="type" type="String" description="Sobject Type" required="true"/>
+    <aura:attribute name="value" type="String" description="Source / Destination value"/>
+    <aura:attribute name="filter" type="String" description="SOQL query with WHERE snippet eg. 'Active=true'"/>
+
+    <aura:attribute name="selectedRecord" type="SObject" default="{}"
+                    description="Use,for store SELECTED sObject Record"/>
+    <aura:attribute name="listOfSearchRecords" type="SOBJECT[]"
+                    description="Use,for store the list of search records which returns from apex class"/>
+    <aura:attribute name="SearchKeyWord" type="string"/>
+    <aura:attribute name="Message" type="String" default="Search Result.."/>
+
+    <!--declare events hendlers-->
+    <aura:handler name="oSelectedSObjectEvent" event="c:sflib_InputLookUpEvent" action="{!c.handleComponentEvent}"/>
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+
+    <!-- https://www.lightningdesignsystem.com/components/lookups/ -->
+    <div aura:id="searchRes" class="slds-form-element slds-lookup slds-is-close" data-select="single">
+        <!--This part is for display search bar for lookup-->
+        <div class="slds-form-element__control">
+            <div class="slds-input-has-icon slds-input-has-icon--right">
+                <lightning:icon class="slds-input__icon slds-show" iconName="utility:search" size="x-small"/>
+                <div aura:id="lookup-pill" class="slds-pill-container slds-hide">
+                    <span class="slds-pill">
+                        <span class="slds-pill__label">{!v.selectedRecord.Name}</span>
+                        <button class="slds-button slds-button--icon slds-pill__remove" onclick="{!c.clear}">
+                            <lightning:icon class="button__icon" iconName="utility:close" size="x-small"/>
+                            <span class="slds-assistive-text">Remove</span>
+                        </button>
+                    </span>
+                </div>
+                <div aura:id="lookupField" class="slds-show">
+                    <ui:inputText updateOn="keyup" keyup="{!c.keyPressController}"
+                                  class="slds-lookup__search-input slds-input " value="{!v.SearchKeyWord}"
+                                  placeholder="search.."/>
+                </div>
+            </div>
+        </div>
+        <!--This part is for Display typehead lookup result List-->
+        <div class="slds-lookup__menu slds" id="lookup-348">
+            <div class="slds-lookup__item--label slds-text-body--small">{!v.Message}</div>
+            <div class="slds-" />
+            <center>
+                <ui:spinner aura:id="spinner"/>
+            </center>
+            <ul class="slds-lookup__list" role="listbox">
+                <aura:iteration items="{!v.listOfSearchRecords}" var="singleRec">
+                    <c:sflib_InputLookUpResult oRecord="{!singleRec}"/>
+                </aura:iteration>
+            </ul>
+        </div>
+    </div>
+</aura:component>
