@@ -19,7 +19,7 @@
     @version: 1.0
 -->
 <aura:component>
-    <aura:attribute access="public" name="oRecord" type="SObject"/>
+    <aura:attribute access="public" name="record" type="SObject"/>
     <!--Register the component level event-->
     <aura:registerEvent name="oSelectedSObjectEvent" type="c:sflib_InputLookUpEvent"/>
 
@@ -27,8 +27,7 @@
         <div class="slds-lookup__item-action slds-media slds-media--center" id="lookup-option-350" role="option">
             <div class="slds-media__body">
                 <div class="slds-input-has-icon slds-input-has-icon--right">
-                    <!--<c:svg class="slds-input__icon" xlinkHref="{!$Resource.SLDS24 + '/assets/icons/standard-sprite/svg/symbols.svg#account'}" />-->
-                    <div class="slds-lookup__result-text"><a onclick="{!c.selectSObject}">{!v.oRecord.Name}</a></div>
+                    <div class="slds-lookup__result-text"><a onclick="{!c.selectSObject}">{!v.record.Name}</a></div>
                 </div>
             </div>
         </div>

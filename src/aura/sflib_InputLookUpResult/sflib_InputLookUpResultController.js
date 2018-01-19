@@ -20,7 +20,7 @@
 ({
     selectSObject: function (component, event, helper) {
         // get the selected Account from list
-        var getSelectSObject = component.get("v.oRecord");
+        var getSelectSObject = component.get("v.record");
         // call the event
         var compEvent = component.getEvent("oSelectedSObjectEvent");
         // set the Selected Account to the event attribute.

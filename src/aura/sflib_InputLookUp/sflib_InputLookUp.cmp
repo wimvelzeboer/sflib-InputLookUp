@@ -71,7 +71,7 @@
             </center>
             <ul class="slds-lookup__list" role="listbox">
                 <aura:iteration items="{!v.listOfSearchRecords}" var="singleRec">
-                    <c:sflib_InputLookUpResult oRecord="{!singleRec}"/>
+                    <c:sflib_InputLookUpResult record="{!singleRec}"/>
                 </aura:iteration>
             </ul>
         </div>
